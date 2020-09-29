@@ -1,16 +1,20 @@
 package com.dqgs.util;
 
 import com.dqgs.RPG;
+import com.dqgs.files.PlayerData;
 import com.dqgs.util.classes.Roles;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class PlayerStats {
+import java.util.HashMap;
+import java.util.Map;
 
+public class PlayerStats {
     Player player;
     Roles roles;
     public int defense, mana, maxMana;
     public double health, maxHealth;
+    private static Map<User, PlayerStats> getuser = new HashMap<>();
 
     public PlayerStats(int defense, double health, double maxHealth, int mana, int maxMana, Roles roles, Player player){
         this.defense = defense;
@@ -20,6 +24,22 @@ public class PlayerStats {
         this.maxMana = maxMana;
         this.roles = roles;
         this.player = player;
+    }
+
+    public static PlayerStats getFromUser(User user) {
+        PlayerStats stats = getuser.get(user);
+        if (stats == null) {
+            int Defense = PlayerData.get().getInt("player." + user.getPlayer().getUniqueId() + ".Defense");
+            double Health = PlayerData.get().getInt("player." + user.getPlayer().getUniqueId() + ".Health");
+            double MaxHealth = PlayerData.get().getInt("player." + user.getPlayer().getUniqueId() + ".MaxHealth");
+            int Mana = PlayerData.get().getInt("player." + user.getPlayer().getUniqueId() + ".Mana");
+            int MaxMana = PlayerData.get().getInt("player." + user.getPlayer().getUniqueId() + ".MaxMana");
+            Roles roles = Roles.valueOf(PlayerData.get().getString("player." + user.getPlayer().getUniqueId() +".Role"));
+
+            stats = new PlayerStats(Defense, Health,MaxHealth,Mana,MaxMana, roles, user.getPlayer());
+            getuser.put(user, stats);
+        }
+        return stats;
     }
 
     public int getDefense() {

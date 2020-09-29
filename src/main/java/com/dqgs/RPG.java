@@ -33,8 +33,7 @@ public final class RPG extends JavaPlugin{
         PlayerData.get().options().copyDefaults(true);
         PlayerData.save();
         for (Player player : Bukkit.getOnlinePlayers()){
-            User user = RPG.INSTANCE.playerStats.get(player.getUniqueId());
-            PlayerData.loadPlayer(user, player);
+            PlayerData.loadPlayer(player);
         }
     }
 

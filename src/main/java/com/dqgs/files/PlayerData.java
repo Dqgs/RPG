@@ -43,7 +43,7 @@ public class PlayerData {
         datafile = (FileConfiguration)YamlConfiguration.loadConfiguration(file);
     }
 
-    public static void loadPlayer(User user, Player player) {
+    public static void loadPlayer(Player player) {
         if (!PlayerData.get().contains("player." + player.getUniqueId() + ".Defense") && !PlayerData.get().contains("player." + player.getUniqueId() + ".Health")) {
 
             PlayerData.get().set("player." + player.getUniqueId() + ".Defense", 0);
@@ -62,6 +62,7 @@ public class PlayerData {
             Roles roles = Roles.valueOf(PlayerData.get().getString("player." + player.getUniqueId() +".Role"));
 
             RPG.INSTANCE.playerStats.put(player.getUniqueId(), new User(player));
+            User user = RPG.INSTANCE.playerStats.get(player.getUniqueId());
             user.getStats().setDefense(user, Defense);
             user.getStats().setHealth(user, Health);
             user.getStats().setMaxHealth(user, MaxHealth);
@@ -79,8 +80,7 @@ public class PlayerData {
             Roles roles = Roles.valueOf(PlayerData.get().getString("player." + player.getUniqueId() +".Role"));
 
             RPG.INSTANCE.playerStats.put(player.getUniqueId(), new User(player));
-            Bukkit.broadcastMessage(user.toString());
-            Bukkit.broadcastMessage(user.getStats().toString());
+            User user = RPG.INSTANCE.playerStats.get(player.getUniqueId());
             user.getStats().setDefense(user, Defense);
             user.getStats().setHealth(user, Health);
             user.getStats().setMaxHealth(user, MaxHealth);

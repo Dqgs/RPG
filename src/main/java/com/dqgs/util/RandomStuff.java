@@ -8,12 +8,25 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class RandomStuff {
 
     private Player player;
+    private static Map<User, RandomStuff> getuser = new HashMap<>();
 
     public RandomStuff(Player player){
         this.player = player;
+    }
+
+    public static RandomStuff getFromUser(User user) {
+        RandomStuff stats = getuser.get(user);
+        if (stats == null) {
+            stats = new RandomStuff(user.getPlayer());
+            getuser.put(user, stats);
+        }
+        return stats;
     }
 
     public void setBoard(User user){
@@ -21,12 +34,6 @@ public class RandomStuff {
         scoreboard.setTitle("" + ChatColor.AQUA + ChatColor.BOLD +"RPG");
 
         scoreboard.setSlot(6, ChatColor.RED + "Health: ");
-        Bukkit.broadcastMessage(String.valueOf(RPG.INSTANCE.playerStats.containsKey(player.getUniqueId())));
-        Bukkit.broadcastMessage(player.toString());
-        Bukkit.broadcastMessage(user.toString());
-        Bukkit.broadcastMessage(user.getStats().toString());
-        Bukkit.broadcastMessage(String.valueOf(user.getStats().getHealth()));
-        Bukkit.broadcastMessage(String.valueOf(user.getStats().getMaxHealth()));
         scoreboard.setSlot(5, user.getStats().getHealth() + " / " + user.getStats().getMaxHealth());
         scoreboard.setSlot(4, ChatColor.GREEN + "Defense: ");
         scoreboard.setSlot(3, String.valueOf(user.getStats().getDefense()));

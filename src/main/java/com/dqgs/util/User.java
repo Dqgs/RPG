@@ -4,6 +4,9 @@ import com.dqgs.util.classes.Mage;
 import com.dqgs.util.classes.Roles;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class User {
 
     private final Player player;
@@ -15,10 +18,12 @@ public class User {
     }
 
     public PlayerStats getStats(){
+        this.stats = PlayerStats.getFromUser(this);
         return this.stats;
     }
 
     public RandomStuff getRandomStuff(){
+        this.randomStuff = RandomStuff.getFromUser(this);
         return this.randomStuff;
     }
 

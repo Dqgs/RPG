@@ -13,8 +13,11 @@ public class Join implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event){
         Player player = event.getPlayer();
+        PlayerData.loadPlayer(player);
         User user = RPG.INSTANCE.playerStats.get(player.getUniqueId());
-        PlayerData.loadPlayer(user, player);
+        Bukkit.broadcastMessage(String.valueOf(RPG.INSTANCE.playerStats.get(player.getUniqueId())));
+        Bukkit.broadcastMessage(user.toString());
+        Bukkit.broadcastMessage(user.getRandomStuff().toString());
         user.getRandomStuff().setBoard(user);
         user.pickRole();
         user.getStats().rengen(user, 2);
