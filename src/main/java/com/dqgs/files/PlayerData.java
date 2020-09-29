@@ -1,8 +1,6 @@
 package com.dqgs.files;
 
 import com.dqgs.RPG;
-import com.dqgs.util.PlayerStats;
-import com.dqgs.util.RandomStuff;
 import com.dqgs.util.User;
 import com.dqgs.util.classes.Roles;
 import org.bukkit.Bukkit;
@@ -22,9 +20,11 @@ public class PlayerData {
         file = new File(Bukkit.getServer().getPluginManager().getPlugin("RPG").getDataFolder(), "PlayerData.yml");
         if (!file.exists())
             try {
+                System.out.println("[RPG] Creating a new File");
                 file.createNewFile();
+                System.out.println("[RPG] File Has been Created");
             } catch (IOException iOException) {}
-        datafile = (FileConfiguration) YamlConfiguration.loadConfiguration(file);
+        datafile = YamlConfiguration.loadConfiguration(file);
     }
 
     public static FileConfiguration get() {
@@ -34,13 +34,16 @@ public class PlayerData {
     public static void save() {
         try {
             datafile.save(file);
+            System.out.println("[RPG] File Has been Saved");
         } catch (IOException e) {
-            System.out.println("Couldn't save playerdata.yml");
+            System.out.println("[RPG] Couldn't save playerdata.yml");
         }
     }
 
     public static void reload() {
-        datafile = (FileConfiguration)YamlConfiguration.loadConfiguration(file);
+        Bukkit.broadcastMessage("[RPG] Reloading");
+        datafile = YamlConfiguration.loadConfiguration(file);
+        System.out.println("[RPG] Reload Complete");
     }
 
     public static void loadPlayer(Player player) {
@@ -59,6 +62,7 @@ public class PlayerData {
             double MaxHealth = PlayerData.get().getInt("player." + player.getUniqueId() + ".MaxHealth");
             int Mana = PlayerData.get().getInt("player." + player.getUniqueId() + ".Mana");
             int MaxMana = PlayerData.get().getInt("player." + player.getUniqueId() + ".MaxMana");
+            double XP = PlayerData.get().getDouble("player." + player.getUniqueId() + ".XP");
             Roles roles = Roles.valueOf(PlayerData.get().getString("player." + player.getUniqueId() +".Role"));
 
             RPG.INSTANCE.playerStats.put(player.getUniqueId(), new User(player));
@@ -68,6 +72,7 @@ public class PlayerData {
             user.getStats().setMaxHealth(user, MaxHealth);
             user.getStats().setMana(user, Mana);
             user.getStats().setMana(user, MaxMana);
+            user.getStats().setXp(user, XP);
             user.getStats().setRoles(user, roles);
 
         } else {
@@ -77,6 +82,7 @@ public class PlayerData {
             double MaxHealth = PlayerData.get().getInt("player." + player.getUniqueId() + ".MaxHealth");
             int Mana = PlayerData.get().getInt("player." + player.getUniqueId() + ".Mana");
             int MaxMana = PlayerData.get().getInt("player." + player.getUniqueId() + ".MaxMana");
+            double XP = PlayerData.get().getDouble("player." + player.getUniqueId() + ".XP");
             Roles roles = Roles.valueOf(PlayerData.get().getString("player." + player.getUniqueId() +".Role"));
 
             RPG.INSTANCE.playerStats.put(player.getUniqueId(), new User(player));
@@ -86,6 +92,7 @@ public class PlayerData {
             user.getStats().setMaxHealth(user, MaxHealth);
             user.getStats().setMana(user, Mana);
             user.getStats().setMana(user, MaxMana);
+            user.getStats().setXp(user, XP);
             user.getStats().setRoles(user, roles);
         }
     }
@@ -94,11 +101,14 @@ public class PlayerData {
         User user = RPG.INSTANCE.playerStats.get(player.getUniqueId());
         if (RPG.INSTANCE.playerStats.containsKey(player.getUniqueId())) {
 
+            user.getStats().transferLevelToXp(user);
+
             PlayerData.get().set("player." + player.getUniqueId() + ".Defense", user.getStats().getDefense());
             PlayerData.get().set("player." + player.getUniqueId() + ".Health", user.getStats().getHealth());
             PlayerData.get().set("player." + player.getUniqueId() + ".MaxHealth", user.getStats().getMaxHealth());
             PlayerData.get().set("player." + player.getUniqueId() + ".Mana", user.getStats().getMaxMana());
             PlayerData.get().set("player." + player.getUniqueId() + ".MaxMana", user.getStats().getMaxMana());
+            PlayerData.get().set("player." + player.getUniqueId() + ".XP", user.getStats().getXp());
             PlayerData.get().set("player." + player.getUniqueId() + ".Role", user.getStats().getRoles().name());
             PlayerData.save();
 

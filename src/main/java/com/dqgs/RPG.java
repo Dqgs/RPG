@@ -2,7 +2,6 @@ package com.dqgs;
 
 import com.dqgs.events.*;
 import com.dqgs.files.PlayerData;
-import com.dqgs.util.PlayerStats;
 import com.dqgs.util.User;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

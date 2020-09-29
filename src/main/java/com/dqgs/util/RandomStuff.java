@@ -1,10 +1,6 @@
 package com.dqgs.util;
 
-import com.dqgs.RPG;
-import com.dqgs.util.classes.Mage;
-import com.dqgs.util.classes.Roles;
 import com.dqgs.util.scoreboards.ScoreHelper;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -33,6 +29,9 @@ public class RandomStuff {
         ScoreHelper scoreboard = ScoreHelper.createScore(this.player);
         scoreboard.setTitle("" + ChatColor.AQUA + ChatColor.BOLD +"RPG");
 
+        scoreboard.setSlot(7, ChatColor.DARK_AQUA + "Account: " + player);
+        scoreboard.setSlot(8, ChatColor.DARK_AQUA + "Level: " + user.getStats().getLevel());
+        scoreboard.setSlot(7, ChatColor.DARK_AQUA + "XP: " + user.getStats().getXp());
         scoreboard.setSlot(6, ChatColor.RED + "Health: ");
         scoreboard.setSlot(5, user.getStats().getHealth() + " / " + user.getStats().getMaxHealth());
         scoreboard.setSlot(4, ChatColor.GREEN + "Defense: ");
@@ -43,13 +42,11 @@ public class RandomStuff {
 
     public void updateScoreBoard(User user){
         if (player != null) {
-            Bukkit.broadcastMessage("Player");
             if (ScoreHelper.hasScore(this.player)) {
-                Bukkit.broadcastMessage("Scorehelper");
                 ScoreHelper scoreHelper = ScoreHelper.getByPlayer(player);
-                Bukkit.broadcastMessage("get player");
+                scoreHelper.setSlot(8, ChatColor.DARK_AQUA + "Level: " + user.getStats().getLevel());
+                scoreHelper.setSlot(7, ChatColor.DARK_AQUA + "XP: " + user.getStats().getXp());
                 scoreHelper.setSlot(5, user.getStats().getHealth() + " / " + user.getStats().getMaxHealth());
-                Bukkit.broadcastMessage("get stats health");
                 scoreHelper.setSlot(3, String.valueOf(user.getStats().getDefense()));
                 scoreHelper.setSlot(1, user.getStats().getMana() + " / " + user.getStats().getMaxMana());
             }

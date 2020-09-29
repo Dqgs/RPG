@@ -4,9 +4,6 @@ import com.dqgs.util.classes.Mage;
 import com.dqgs.util.classes.Roles;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class User {
 
     private final Player player;
@@ -35,9 +32,7 @@ public class User {
         if (getStats().getRoles() != null) {
             switch (getStats().getRoles()) {
                 case UNPICKED:
-                    player.sendMessage("You are unpicked");
                     getStats().setRoles(this, Roles.MAGE);
-                    player.sendMessage("You are now a " + getStats().getRoles());
                     break;
                 case MAGE:
                     Mage mage = new Mage();

@@ -12,16 +12,17 @@ import java.util.Map;
 public class PlayerStats {
     Player player;
     Roles roles;
-    public int defense, mana, maxMana;
-    public double health, maxHealth;
+    public int defense, mana, maxMana, level;
+    public double health, maxHealth, xp;
     private static Map<User, PlayerStats> getuser = new HashMap<>();
 
-    public PlayerStats(int defense, double health, double maxHealth, int mana, int maxMana, Roles roles, Player player){
+    public PlayerStats(int defense, double health, double maxHealth, int mana, int maxMana, double xp, Roles roles, Player player){
         this.defense = defense;
         this.health = health;
         this.maxHealth = maxHealth;
         this.mana = mana;
         this.maxMana = maxMana;
+        this.xp = xp;
         this.roles = roles;
         this.player = player;
     }
@@ -34,9 +35,10 @@ public class PlayerStats {
             double MaxHealth = PlayerData.get().getInt("player." + user.getPlayer().getUniqueId() + ".MaxHealth");
             int Mana = PlayerData.get().getInt("player." + user.getPlayer().getUniqueId() + ".Mana");
             int MaxMana = PlayerData.get().getInt("player." + user.getPlayer().getUniqueId() + ".MaxMana");
+            int xp = PlayerData.get().getInt("player." + user.getPlayer().getUniqueId() + ".XP");
             Roles roles = Roles.valueOf(PlayerData.get().getString("player." + user.getPlayer().getUniqueId() +".Role"));
 
-            stats = new PlayerStats(Defense, Health,MaxHealth,Mana,MaxMana, roles, user.getPlayer());
+            stats = new PlayerStats(Defense, Health,MaxHealth,Mana,MaxMana, xp, roles, user.getPlayer());
             getuser.put(user, stats);
         }
         return stats;
@@ -102,6 +104,46 @@ public class PlayerStats {
 
     public Roles getRoles(){
         return roles;
+    }
+
+    public void transferXpToLevel(User user){
+        double xpNeeded;
+        xpNeeded = 100;
+        while (getXp() >= xpNeeded){
+            setXp(user, getXp() - xpNeeded);
+            setLevel(user, getLevel() + 1);
+
+            System.out.println("Level: " + getLevel());
+            System.out.println("Xp: " + getXp());
+        }
+    }
+
+    public void transferLevelToXp(User user) {
+        while (getLevel() >= 1) {
+            setXp(user, getXp() + 100);
+            setLevel(user, getLevel() - 1);
+
+            System.out.println("Level: " + getLevel());
+            System.out.println("Xp: " + getXp());
+        }
+    }
+
+    public void setXp(User user, double xp){
+        this.xp = xp;
+        transferXpToLevel(user);
+        user.getRandomStuff().updateScoreBoard(user);
+    }
+
+    public void setLevel(User user, int level){
+        this.level = level;
+        user.getRandomStuff().updateScoreBoard(user);
+    }
+
+    public double getXp(){
+        return xp;
+    }
+    public int getLevel(){
+        return level;
     }
 
     public void setRoles(User user, Roles roles){
