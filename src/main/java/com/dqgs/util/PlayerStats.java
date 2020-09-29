@@ -75,7 +75,7 @@ public class PlayerStats {
     }
 
     public void setHealth(User user, double health) {
-        this.health = health;
+        this.health = Math.Round(health);
         updateHealth(user);
     }
 
@@ -112,9 +112,6 @@ public class PlayerStats {
         while (getXp() >= xpNeeded){
             setXp(user, getXp() - xpNeeded);
             setLevel(user, getLevel() + 1);
-
-            System.out.println("Level: " + getLevel());
-            System.out.println("Xp: " + getXp());
         }
     }
 
@@ -122,15 +119,11 @@ public class PlayerStats {
         while (getLevel() >= 1) {
             setXp(user, getXp() + 100);
             setLevel(user, getLevel() - 1);
-
-            System.out.println("Level: " + getLevel());
-            System.out.println("Xp: " + getXp());
         }
     }
 
     public void setXp(User user, double xp){
         this.xp = xp;
-        transferXpToLevel(user);
         user.getRandomStuff().updateScoreBoard(user);
     }
 
