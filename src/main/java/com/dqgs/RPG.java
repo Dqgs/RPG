@@ -2,7 +2,8 @@ package com.dqgs;
 
 import com.dqgs.events.*;
 import com.dqgs.files.PlayerData;
-import com.dqgs.util.User;
+import com.dqgs.util.User.User;
+import com.dqgs.util.world.Worlds;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
@@ -19,9 +20,13 @@ public final class RPG extends JavaPlugin{
 
     @Override
     public void onEnable() {
+        long now = System.currentTimeMillis();
         events();
         commands();
         INSTANCE = this;
+        Worlds worlds = new Worlds();
+        worlds.loadWorlds();
+
 
         //Files
         getConfig().options().copyDefaults();
@@ -34,6 +39,9 @@ public final class RPG extends JavaPlugin{
         for (Player player : Bukkit.getOnlinePlayers()){
             PlayerData.loadPlayer(player);
         }
+        long end = System.currentTimeMillis();
+        long seconds = (end - now) / 1000;
+        System.out.println("[RPG] It took " + seconds + "s to start");
     }
 
     @Override
@@ -50,6 +58,7 @@ public final class RPG extends JavaPlugin{
         server.registerEvents(new Join(), this);
         server.registerEvents(new Leave(), this);
         server.registerEvents(new Regen(), this);
+        server.registerEvents(new CreatureSpawn(), this);
     }
 
     public void commands(){

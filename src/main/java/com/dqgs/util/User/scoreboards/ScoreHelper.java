@@ -1,4 +1,4 @@
-package com.dqgs.util.scoreboards;
+package com.dqgs.util.User.scoreboards;
 
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +39,6 @@ public class ScoreHelper {
         scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
         sidebar = scoreboard.registerNewObjective("sidebar", "dummy");
         sidebar.setDisplaySlot(DisplaySlot.SIDEBAR);
-        // Create Teams
         for(int i=1; i<=15; i++) {
             Team team = scoreboard.registerNewTeam("SLOT_" + i);
             team.addEntry(genEntry(i));

@@ -1,8 +1,7 @@
 package com.dqgs.files;
 
 import com.dqgs.RPG;
-import com.dqgs.util.User;
-import com.dqgs.util.classes.Roles;
+import com.dqgs.util.User.User;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -54,7 +53,6 @@ public class PlayerData {
             PlayerData.get().set("player." + player.getUniqueId() + ".MaxHealth", 100d);
             PlayerData.get().set("player." + player.getUniqueId() + ".Mana", 100d);
             PlayerData.get().set("player." + player.getUniqueId() + ".MaxMana", 100d);
-            PlayerData.get().set("player." + player.getUniqueId() + ".Role", Roles.UNPICKED.name());
             PlayerData.save();
             
             int Defense = PlayerData.get().getInt("player." + player.getUniqueId() + ".Defense");
@@ -63,17 +61,16 @@ public class PlayerData {
             int Mana = PlayerData.get().getInt("player." + player.getUniqueId() + ".Mana");
             int MaxMana = PlayerData.get().getInt("player." + player.getUniqueId() + ".MaxMana");
             double XP = PlayerData.get().getDouble("player." + player.getUniqueId() + ".XP");
-            Roles roles = Roles.valueOf(PlayerData.get().getString("player." + player.getUniqueId() +".Role"));
 
             RPG.INSTANCE.playerStats.put(player.getUniqueId(), new User(player));
             User user = RPG.INSTANCE.playerStats.get(player.getUniqueId());
+            user.getRandomStuff().setBoard(user);
             user.getStats().setDefense(user, Defense);
             user.getStats().setHealth(user, Health);
             user.getStats().setMaxHealth(user, MaxHealth);
             user.getStats().setMana(user, Mana);
             user.getStats().setMana(user, MaxMana);
             user.getStats().setXp(user, XP);
-            user.getStats().setRoles(user, roles);
 
         } else {
 
@@ -83,24 +80,22 @@ public class PlayerData {
             int Mana = PlayerData.get().getInt("player." + player.getUniqueId() + ".Mana");
             int MaxMana = PlayerData.get().getInt("player." + player.getUniqueId() + ".MaxMana");
             double XP = PlayerData.get().getDouble("player." + player.getUniqueId() + ".XP");
-            Roles roles = Roles.valueOf(PlayerData.get().getString("player." + player.getUniqueId() +".Role"));
 
             RPG.INSTANCE.playerStats.put(player.getUniqueId(), new User(player));
             User user = RPG.INSTANCE.playerStats.get(player.getUniqueId());
+            user.getRandomStuff().setBoard(user);
             user.getStats().setDefense(user, Defense);
             user.getStats().setHealth(user, Health);
             user.getStats().setMaxHealth(user, MaxHealth);
             user.getStats().setMana(user, Mana);
             user.getStats().setMana(user, MaxMana);
             user.getStats().setXp(user, XP);
-            user.getStats().setRoles(user, roles);
         }
     }
 
     public static void savePlayer(Player player) {
         User user = RPG.INSTANCE.playerStats.get(player.getUniqueId());
         if (RPG.INSTANCE.playerStats.containsKey(player.getUniqueId())) {
-
             user.getStats().transferLevelToXp(user);
 
             PlayerData.get().set("player." + player.getUniqueId() + ".Defense", user.getStats().getDefense());
@@ -109,7 +104,6 @@ public class PlayerData {
             PlayerData.get().set("player." + player.getUniqueId() + ".Mana", user.getStats().getMaxMana());
             PlayerData.get().set("player." + player.getUniqueId() + ".MaxMana", user.getStats().getMaxMana());
             PlayerData.get().set("player." + player.getUniqueId() + ".XP", user.getStats().getXp());
-            PlayerData.get().set("player." + player.getUniqueId() + ".Role", user.getStats().getRoles().name());
             PlayerData.save();
 
             RPG.INSTANCE.playerStats.remove(player.getUniqueId());

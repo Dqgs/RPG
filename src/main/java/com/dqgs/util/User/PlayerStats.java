@@ -1,8 +1,8 @@
-package com.dqgs.util;
+package com.dqgs.util.User;
 
 import com.dqgs.RPG;
 import com.dqgs.files.PlayerData;
-import com.dqgs.util.classes.Roles;
+import com.dqgs.util.Math;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -11,21 +11,21 @@ import java.util.Map;
 
 public class PlayerStats {
     Player player;
-    Roles roles;
     public int defense, mana, maxMana, level;
     public double health, maxHealth, xp;
     private static Map<User, PlayerStats> getuser = new HashMap<>();
 
-    public PlayerStats(int defense, double health, double maxHealth, int mana, int maxMana, double xp, Roles roles, Player player){
+    public PlayerStats(int defense, double health, double maxHealth, int mana, int maxMana, double xp, Player player){
         this.defense = defense;
         this.health = health;
         this.maxHealth = maxHealth;
         this.mana = mana;
         this.maxMana = maxMana;
         this.xp = xp;
-        this.roles = roles;
         this.player = player;
     }
+
+
 
     public static PlayerStats getFromUser(User user) {
         PlayerStats stats = getuser.get(user);
@@ -36,9 +36,8 @@ public class PlayerStats {
             int Mana = PlayerData.get().getInt("player." + user.getPlayer().getUniqueId() + ".Mana");
             int MaxMana = PlayerData.get().getInt("player." + user.getPlayer().getUniqueId() + ".MaxMana");
             int xp = PlayerData.get().getInt("player." + user.getPlayer().getUniqueId() + ".XP");
-            Roles roles = Roles.valueOf(PlayerData.get().getString("player." + user.getPlayer().getUniqueId() +".Role"));
 
-            stats = new PlayerStats(Defense, Health,MaxHealth,Mana,MaxMana, xp, roles, user.getPlayer());
+            stats = new PlayerStats(Defense, Health,MaxHealth,Mana,MaxMana, xp, user.getPlayer());
             getuser.put(user, stats);
         }
         return stats;
@@ -102,10 +101,6 @@ public class PlayerStats {
         user.getRandomStuff().updateScoreBoard(user);
     }
 
-    public Roles getRoles(){
-        return roles;
-    }
-
     public void transferXpToLevel(User user){
         double xpNeeded;
         xpNeeded = 100;
@@ -137,11 +132,6 @@ public class PlayerStats {
     }
     public int getLevel(){
         return level;
-    }
-
-    public void setRoles(User user, Roles roles){
-        this.roles = roles;
-        user.getRandomStuff().updateScoreBoard(user);
     }
 
     public void rengen(User user, int seconds){

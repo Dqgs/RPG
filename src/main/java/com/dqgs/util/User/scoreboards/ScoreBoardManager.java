@@ -1,25 +1,25 @@
-package com.dqgs.util;
+package com.dqgs.util.User.scoreboards;
 
-import com.dqgs.util.scoreboards.ScoreHelper;
+import com.dqgs.util.User.User;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class RandomStuff {
+public class ScoreBoardManager {
 
     private Player player;
-    private static Map<User, RandomStuff> getuser = new HashMap<>();
+    private static Map<User, ScoreBoardManager> getuser = new HashMap<>();
 
-    public RandomStuff(Player player){
+    public ScoreBoardManager(Player player){
         this.player = player;
     }
 
-    public static RandomStuff getFromUser(User user) {
-        RandomStuff stats = getuser.get(user);
+    public static ScoreBoardManager getFromUser(User user) {
+        ScoreBoardManager stats = getuser.get(user);
         if (stats == null) {
-            stats = new RandomStuff(user.getPlayer());
+            stats = new ScoreBoardManager(user.getPlayer());
             getuser.put(user, stats);
         }
         return stats;
@@ -38,6 +38,7 @@ public class RandomStuff {
         scoreboard.setSlot(3, String.valueOf(user.getStats().getDefense()));
         scoreboard.setSlot(2, ChatColor.AQUA + "Mana: ");
         scoreboard.setSlot(1, user.getStats().getMana() + " / " + user.getStats().getMaxMana());
+
     }
 
     public void updateScoreBoard(User user){
