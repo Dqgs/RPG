@@ -16,6 +16,7 @@ public class Damage implements Listener {
     @EventHandler
     public void onDamage(EntityDamageEvent event){
         if (event.getEntity() instanceof Player){
+            event.setCancelled(true);
             Player player = (Player) event.getEntity();
             double damage = event.getDamage();
             User user = RPG.INSTANCE.playerStats.get(player.getUniqueId());
@@ -23,12 +24,15 @@ public class Damage implements Listener {
             if (user.getPlayer().getInventory().getItemInMainHand() != null){
                 ItemStack item = player.getInventory().getItemInMainHand();
                 net.minecraft.server.v1_12_R1.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
-                if (!nmsItem.hasTag()) Bukkit.broadcastMessage("NO TAGS");
+                if (!nmsItem.hasTag()) {
+                    Bukkit.broadcastMessage("NO TAGS");
+                    return;
+                }
                 NBTTagCompound tag = nmsItem.getTag();
-                if (tag.getInt("Defense") > 2){
+                if (tag.getInt("defense") > 1){
                     Bukkit.broadcastMessage("TRUESSSS");
                 } else {
-                    Bukkit.broadcastMessage("NBT: " );
+                    Bukkit.broadcastMessage("NBT: " + tag);
                 }
             } else {
                 Bukkit.broadcastMessage("NULL ITEm");

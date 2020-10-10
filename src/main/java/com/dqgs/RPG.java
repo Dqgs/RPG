@@ -6,6 +6,7 @@ import com.dqgs.util.User.User;
 import com.dqgs.util.world.Worlds;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -17,6 +18,7 @@ public final class RPG extends JavaPlugin{
     public static RPG INSTANCE;
 
     public HashMap<UUID, User> playerStats = new HashMap<>();
+    public HashMap<Integer, ItemStack> items = new HashMap<>();
 
     @Override
     public void onEnable() {

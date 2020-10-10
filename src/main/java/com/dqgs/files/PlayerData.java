@@ -64,6 +64,7 @@ public class PlayerData {
 
             RPG.INSTANCE.playerStats.put(player.getUniqueId(), new User(player));
             User user = RPG.INSTANCE.playerStats.get(player.getUniqueId());
+            user.getStats().transferXpToLevel(user);
             user.getRandomStuff().setBoard(user);
             user.getStats().setDefense(user, Defense);
             user.getStats().setHealth(user, Health);
@@ -83,6 +84,7 @@ public class PlayerData {
 
             RPG.INSTANCE.playerStats.put(player.getUniqueId(), new User(player));
             User user = RPG.INSTANCE.playerStats.get(player.getUniqueId());
+            user.getStats().transferXpToLevel(user);
             user.getRandomStuff().setBoard(user);
             user.getStats().setDefense(user, Defense);
             user.getStats().setHealth(user, Health);
